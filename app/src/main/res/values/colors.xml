@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3D3D3D</color>
+    <color name="colorPrimaryDark">#3D3D3D</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorPanelNext">#202020</color>
+    <color name="colorPanelNow">#2E2E2E</color>
+    <color name="colorGray">#535353</color>
+</resources>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1"
+    tools:context="com.sundevs.events.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/panel_no_events"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.55"
+        android:background="@color/colorPanelNow"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="35dp"
+        android:paddingTop="58dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lab_no_events"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_big" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/panel_now"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.55"
+        android:background="@color/colorPanelNow"
+        android:orientation="vertical"
+        android:paddingStart="35dp"
+        android:paddingTop="58dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Events Now"
+            android:textColor="@android:color/white"
+            android:textSize="72sp" />
+
+        <TextView
+            android:id="@+id/lab_name_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Sprint"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/lab_description_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Desarrollo de nuevo proyecto"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/lab_hour_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="10:00 am - 12:00 pm"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.45"
+        android:background="@color/colorPanelNext"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="4dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:text="Next Reservations"
+            android:textColor="@android:color/white"
+            android:textSize="45sp" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0.7">
+
+        </android.support.v4.view.ViewPager>
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:ci_orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_new_event"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_btn"
+                android:text="New event"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
