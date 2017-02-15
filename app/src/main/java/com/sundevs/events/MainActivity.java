@@ -68,7 +68,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("onresume");
         load();
     }
 
@@ -157,7 +156,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         String date = sdf.format(c.getTime());
         Cursor cursor = mDbHelper.getData(date);
         if (cursor.moveToFirst()) {
-            //Recorremos el cursor hasta que no haya más registros
             do {
                 String description = cursor.getString(cursor.getColumnIndex("description"));
                 String name = cursor.getString(cursor.getColumnIndex("name"));

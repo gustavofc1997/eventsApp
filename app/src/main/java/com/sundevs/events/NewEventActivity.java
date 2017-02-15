@@ -5,18 +5,19 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.edmodo.rangebar.RangeBar;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -34,6 +35,10 @@ public class NewEventActivity extends Activity implements View.OnClickListener {
     //    private CalendarView mCalendar;
     private MaterialCalendarView mCalendar;
     private ProgressDialog mProgress;
+    private int valueLeft = 0;
+    private int valueRight = 0;
+    Cursor cursorEventsForDay;
+    ArrayList<Event> eventsToday = new ArrayList<>();
 
 
     @Override
@@ -49,15 +54,54 @@ public class NewEventActivity extends Activity implements View.OnClickListener {
         mTxtName = (EditText) findViewById(R.id.txt_name_event);
         mTxtDescription = (EditText) findViewById(R.id.txt_description_event);
         mRange = (RangeBar) findViewById(R.id.rangebar);
+        mCalendar.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                String dates = sdf.format(date.getDate());
+                cursorEventsForDay = mDbHelper.getData(dates);
+                loadEventsToday(cursorEventsForDay);
+
+            }
+        });
         mRange.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int left, int right) {
+                CalendarDay date = mCalendar.getSelectedDate();
+                if (date != null) {
+                    if (valueLeft != left) {
+                        valueLeft = left;
+                        checkAvaliable("A", left + 7);
+                    }
+                    if (valueRight != right) {
+                        valueRight = right;
+                        checkAvaliable("B", right + 7);
+                    }
+                }
                 mLabInitialHour.setText(Util.convertIndexToHour(left));
                 mLabFinalHour.setText(Util.convertIndexToHour(right));
-                System.out.println("left=" + left + "right=" + right);
             }
         });
 
+    }
+
+    private void loadEventsToday(Cursor cursor) {
+        eventsToday.clear();
+        if (cursor.moveToFirst()) {
+            do {
+                String description = cursor.getString(cursor.getColumnIndex("description"));
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                int start = cursor.getInt(cursor.getColumnIndex("start"));
+                int end = cursor.getInt(cursor.getColumnIndex("end"));
+                Event event = new Event();
+                event.setDescription(description);
+                event.setName(name);
+                event.setEnd(end);
+                event.setStart(start);
+                eventsToday.add(event);
+
+            } while (cursor.moveToNext());
+        }
     }
 
     private void validateData() {
@@ -89,7 +133,6 @@ public class NewEventActivity extends Activity implements View.OnClickListener {
             String dates = sdf.format(dateSelected);
             Cursor cursor = mDbHelper.getData(dates);
             if (cursor.moveToFirst()) {
-                //Recorremos el cursor hasta que no haya más registros
                 do {
                     int start = cursor.getInt(cursor.getColumnIndex("start"));
                     if (start == (mRange.getLeftIndex() + 7)) {
@@ -101,7 +144,6 @@ public class NewEventActivity extends Activity implements View.OnClickListener {
             }
             if (exits) {
                 mProgress.dismiss();
-
                 Util.showAlert(NewEventActivity.this, "An event already exists ", onClickListener);
             } else {
                 createEvent();
@@ -111,6 +153,37 @@ public class NewEventActivity extends Activity implements View.OnClickListener {
             Util.showAlert(NewEventActivity.this, "Please select a date ", onClickListener);
 
         }
+    }
+
+
+    private void checkAvaliable(String selector, int index) {
+        boolean exists = false;
+        for (Event event : eventsToday) {
+            if (index >= event.getStart() && index < event.getEnd()) {
+                exists = true;
+                break;
+            }
+        }
+        if (exists) {
+            switch (selector) {
+                case "A":
+                    mLabInitialHour.setBackgroundColor(getResources().getColor(R.color.colorRed));
+                    break;
+                case "B":
+                    mLabFinalHour.setBackgroundColor(getResources().getColor(R.color.colorRed));
+                    break;
+            }
+        } else {
+            switch (selector) {
+                case "A":
+                    mLabInitialHour.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                    break;
+                case "B":
+                    mLabFinalHour.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+                    break;
+            }
+        }
+
     }
 
     private void createEvent() {

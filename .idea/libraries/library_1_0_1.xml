@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="library-1.0.1">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.zhikaizhang.calendar/library/1.0.1/res" />
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.zhikaizhang.calendar/library/1.0.1/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/df4e80cb7e7a3f9a974d146c4ea9193d73001d84/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/df4e80cb7e7a3f9a974d146c4ea9193d73001d84/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
